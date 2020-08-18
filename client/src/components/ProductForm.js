@@ -2,36 +2,42 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 export default props => {
-    const [title, setTitle] = useState('');
-    const [price, setPrice] = useState(0);
-    const [description, setDescription] = useState('');
+    const { initialTitle, initialPrice, initialDescription, onSubmitProp } = props;
+    const [title, setTitle] = useState(initialTitle);
+    const [price, setPrice] = useState(initialPrice);
+    const [description, setDescription] = useState(initialDescription);
 
     const onSubmitHandler = e => {
         e.preventDefault();
-        axios.post('http://localhost:8000/api/products', {
-            title,
-            price,
-            description
-        })
-           .then(res=>console.log('Response: ', res))
-           .catch(err=>console.log('Error: ', err))
+        onSubmitProp({ title, price, description });
     };
 
     return(
         <>
-        <h1>Create a product</h1>
         <form onSubmit={ onSubmitHandler }>
             <p>
                 <label>Title: </label>
-                <input type='text' onChange = { e => setTitle(e.target.value) }/>
+                <input
+                type='text'
+                name = 'title'
+                value = { title }
+                onChange = { e => setTitle(e.target.value) }/>
             </p>
             <p>
                 <label>Price: </label>
-                <input type='text' onChange = { e => setPrice(e.target.value) }/>
+                <input
+                type='text'
+                name = 'price'
+                value = { price }
+                onChange = { e => setPrice(e.target.value) }/>
             </p>
             <p>
                 <label>Description: </label>
-                <input type='text' onChange = { e => setDescription(e.target.value) }/>
+                <input
+                type='text'
+                name = 'description'
+                value = { description }
+                onChange = { e => setDescription(e.target.value) }/>
             </p>
             <input type='submit'/>
         </form>
